@@ -51,9 +51,9 @@ class EntityCustomWidgets {
       {EntityListPost entity, bool horizontal = false, Function reload}) {
     final entityThumbnail = kIsWeb
         ? getEntityThumbnailWeb(
-            horizontal, entity.id, 'default', entity.small_image_url)
+            horizontal, entity.id, 'default_entity', entity.small_image_url)
         : getEntityThumbnailIO(
-            horizontal, entity.id, 'default', entity.small_image_url);
+            horizontal, entity.id, 'default_entity', entity.small_image_url);
 
     // final File entityLogoFile =
     //     AppConstants.getImageFile(entity.small_image_url);
@@ -235,9 +235,9 @@ class EntityCustomWidgets {
       {BuiltAllCouncilsPost entity, bool horizontal = false, Function reload}) {
     final entityThumbnail = kIsWeb
         ? getEntityThumbnailWeb(
-            horizontal, entity.id, 'default', entity.small_image_url)
+            horizontal, entity.id, 'default_council', entity.small_image_url)
         : getEntityThumbnailIO(
-            horizontal, entity.id, 'default', entity.small_image_url);
+            horizontal, entity.id, 'default_council', entity.small_image_url);
 
     // final File entityLogoFile =
     //     AppConstants.getImageFile(entity.small_image_url);
