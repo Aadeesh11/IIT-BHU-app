@@ -80,15 +80,14 @@ class _AboutPageState extends State<AboutPage> {
         builder: (context) {
           return Center(
             child: Container(
-              width: MediaQuery.of(context).size.width *0.8,
-              height: MediaQuery.of(context).size.height *0.45,
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.45,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: photoUrl == ''
-                      ? AssetImage('assets/AMC.png')
-                      : NetworkImage(photoUrl),
-                )
-              ),
+                  image: DecorationImage(
+                image: photoUrl == ''
+                    ? AssetImage('assets/AMC.png')
+                    : NetworkImage(photoUrl),
+              )),
             ),
           );
         });
@@ -106,16 +105,55 @@ class _AboutPageState extends State<AboutPage> {
       child: Scaffold(
         backgroundColor: ColorConstants.backgroundThemeColor,
         appBar: AppBar(
-          backgroundColor: ColorConstants.homeBackground,
-          title: Text(
-            "About us",
-            style:
-                Style.baseTextStyle.copyWith(color: ColorConstants.textColor),
-          ),
+          backgroundColor: ColorConstants.grievanceBtn,
+          automaticallyImplyLeading: false,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: ColorConstants.textColor),
-            onPressed: () => Navigator.pop(context),
+            color: ColorConstants.grievanceLabelText,
+            iconSize: 30,
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () async {
+              Navigator.of(context).pop();
+            },
           ),
+          title: Text(
+            'About Us',
+            style: TextStyle(
+                fontFamily: 'Gilroy',
+                color: ColorConstants.grievanceBack,
+                fontWeight: FontWeight.bold,
+                fontSize: 25),
+          ),
+          actions: [
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.only(left: 5, right: 10),
+                      height: 35.0,
+                      width: 35.0,
+                      child: Builder(builder: (context) => Container()),
+                      decoration: AppConstants.isGuest
+                          ? BoxDecoration()
+                          : BoxDecoration(
+                              image: DecorationImage(
+                                  image: AppConstants.currentUser == null ||
+                                          AppConstants.currentUser.photo_url ==
+                                              ''
+                                      ? AssetImage('assets/guest.png')
+                                      : NetworkImage(
+                                          AppConstants.currentUser.photo_url),
+                                  fit: BoxFit.cover),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         drawer: SideBar(context: context),
         body: teamData == null

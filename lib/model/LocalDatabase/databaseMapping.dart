@@ -173,7 +173,8 @@ class DatabaseMapping {
       StringConst.idString: notice.id,
       StringConst.titleString: notice.title ?? "",
       StringConst.dateString: notice.date,
-      StringConst.importanceString: notice.importance ?? 0
+      StringConst.importanceString: notice.importance ?? 0,
+      StringConst.noticeDescription: notice.description ?? "",
     };
     return map;
   }
@@ -184,10 +185,10 @@ class DatabaseMapping {
       StringConst.titleString: notice.title ?? "",
       StringConst.dateString: notice.date,
       StringConst.importanceString: notice.importance ?? 0,
-      StringConst.noticeDescription: notice.description ??"",
-      StringConst.noticeUpvoteString: notice.upvotes??0,
-      StringConst.noticeDownvoteString: notice.downvotes??0,
-      StringConst.noticeHasVotedString: notice.has_voted??"false",
+      StringConst.noticeDescription: notice.description ?? "",
+      StringConst.noticeUpvoteString: notice.upvotes ?? 0,
+      StringConst.noticeDownvoteString: notice.downvotes ?? 0,
+      StringConst.noticeHasVotedString: notice.has_voted ?? "false",
     };
     return map;
   }
@@ -275,23 +276,22 @@ class DatabaseMapping {
         ..id = map[StringConst.idString] ?? ""
         ..title = map[StringConst.titleString]
         ..date = map[StringConst.dateString]
-        ..importance = map[StringConst.importanceString] ?? 0,
+        ..importance = map[StringConst.importanceString] ?? 0
+        ..description = map[StringConst.noticeDescription] ?? "",
     );
     return notices;
   }
 
   static BuiltNoticeDetail noticeDetailFromMap(dynamic map) {
-    final notice = BuiltNoticeDetail(
-      (b) => b
-        ..id = map[StringConst.idString] ?? ""
-        ..title = map[StringConst.titleString]
-        ..date = map[StringConst.dateString]
-        ..importance = map[StringConst.importanceString] ?? 0
-        ..description = map[StringConst.noticeDescription]??""
-        ..upvotes =map[StringConst.noticeUpvoteString]??0
-        ..downvotes=map[StringConst.noticeDownvoteString]??0
-        ..has_voted=map[StringConst.noticeHasVotedString]??"false"
-    );
+    final notice = BuiltNoticeDetail((b) => b
+      ..id = map[StringConst.idString] ?? ""
+      ..title = map[StringConst.titleString]
+      ..date = map[StringConst.dateString]
+      ..importance = map[StringConst.importanceString] ?? 0
+      ..description = map[StringConst.noticeDescription] ?? ""
+      ..upvotes = map[StringConst.noticeUpvoteString] ?? 0
+      ..downvotes = map[StringConst.noticeDownvoteString] ?? 0
+      ..has_voted = map[StringConst.noticeHasVotedString] ?? "false");
     return notice;
   }
 }

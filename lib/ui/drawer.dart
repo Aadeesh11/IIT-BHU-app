@@ -160,24 +160,83 @@ class SideBar extends Drawer {
                   )
                 : getNavItem(Icons.account_box, "Profile", '/profile'),
             // getNavItem(Icons.comment, "Complaints & Suggestions", '/complaints'),
-            ListTile(
-              leading: Icon(Icons.restart_alt_rounded,
-                  color: ColorConstants.textColor),
-              title: Text("Reset Saved Data",
-                  style: Style.baseTextStyle
-                      .copyWith(color: ColorConstants.textColor)),
-              onTap: onResetDatabase,
-            ),
-            getNavItem(Icons.comment, "Grievances", '/grievance'),
-            getNavItem(Icons.search_off, "Lost And Found", '/lostAndFound'),
+            AppConstants.isGuest
+                ? ListTile(
+                    title: Text("Grievances",
+                        style: Style.baseTextStyle
+                            .copyWith(color: ColorConstants.textColor)),
+                    leading: Icon(Icons.account_box,
+                        color: ColorConstants.textColor),
+                    // TODO: ask user to log in , may be in a dialog box
+
+                    onTap: () {
+                      Navigator.pop(context);
+                      return ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(
+                        duration: Duration(seconds: 2),
+                        content: Text(
+                          "You must be logged in!",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15),
+                        ),
+                        backgroundColor: Color(0xFFBBD9FF).withOpacity(0.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        elevation: 5,
+                      ));
+                    },
+                  )
+                : getNavItem(Icons.comment, "Grievances", '/grievance'),
+            AppConstants.isGuest
+                ? ListTile(
+                    title: Text("Lost And Found",
+                        style: Style.baseTextStyle
+                            .copyWith(color: ColorConstants.textColor)),
+                    leading: Icon(Icons.account_box,
+                        color: ColorConstants.textColor),
+                    // TODO: ask user to log in , may be in a dialog box
+
+                    onTap: () {
+                      Navigator.pop(context);
+                      return ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(
+                        duration: Duration(seconds: 2),
+                        content: Text(
+                          "You must be logged in!",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15),
+                        ),
+                        backgroundColor: Color(0xFFBBD9FF).withOpacity(0.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        elevation: 5,
+                      ));
+                    },
+                  )
+                : getNavItem(
+                    Icons.search_off, "Lost And Found", '/lostAndFound'),
             getNavItem(Icons.warning_rounded, "Emergency", '/emergency'),
             ListTile(
-              leading: Icon(Icons.exit_to_app, color: ColorConstants.textColor),
+              leading: Icon(
+                  AppConstants.isGuest
+                      ? Icons.login_rounded
+                      : Icons.logout_rounded,
+                  color: ColorConstants.textColor),
               title: AppConstants.isGuest
                   ? Text('Log In',
                       style: Style.baseTextStyle
                           .copyWith(color: ColorConstants.textColor))
-                  : Text('Logout',
+                  : Text('Log Out',
                       style: Style.baseTextStyle
                           .copyWith(color: ColorConstants.textColor)),
               onTap: () async {
@@ -212,6 +271,14 @@ class SideBar extends Drawer {
               },
             ),
             getNavItem(Icons.info, "About", '/about'),
+            ListTile(
+              leading: Icon(Icons.restart_alt_rounded,
+                  color: ColorConstants.textColor),
+              title: Text("Reset Saved Data",
+                  style: Style.baseTextStyle
+                      .copyWith(color: ColorConstants.textColor)),
+              onTap: onResetDatabase,
+            ),
           ],
         ),
       ),

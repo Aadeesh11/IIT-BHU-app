@@ -2710,6 +2710,9 @@ class _$BuiltAllNoticesSerializer
           specifiedType: const FullType(String)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
+      'description',
+      serializers.serialize(object.description,
+          specifiedType: const FullType(String)),
     ];
     if (object.id != null) {
       result
@@ -2754,6 +2757,10 @@ class _$BuiltAllNoticesSerializer
           result.importance = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'description':
+          result.description = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -2771,23 +2778,29 @@ class _$BuiltNoticeDetailSerializer
   @override
   Iterable<Object> serialize(Serializers serializers, BuiltNoticeDetail object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'title',
-      serializers.serialize(object.title,
-          specifiedType: const FullType(String)),
-      'date',
-      serializers.serialize(object.date, specifiedType: const FullType(String)),
-    ];
+    final result = <Object>[];
     if (object.id != null) {
       result
         ..add('id')
         ..add(serializers.serialize(object.id,
             specifiedType: const FullType(int)));
     }
+    if (object.title != null) {
+      result
+        ..add('title')
+        ..add(serializers.serialize(object.title,
+            specifiedType: const FullType(String)));
+    }
     if (object.description != null) {
       result
         ..add('description')
         ..add(serializers.serialize(object.description,
+            specifiedType: const FullType(String)));
+    }
+    if (object.date != null) {
+      result
+        ..add('date')
+        ..add(serializers.serialize(object.date,
             specifiedType: const FullType(String)));
     }
     if (object.upvotes != null) {
@@ -7840,17 +7853,23 @@ class _$BuiltAllNotices extends BuiltAllNotices {
   final String date;
   @override
   final int importance;
+  @override
+  final String description;
 
   factory _$BuiltAllNotices([void Function(BuiltAllNoticesBuilder) updates]) =>
       (new BuiltAllNoticesBuilder()..update(updates)).build();
 
-  _$BuiltAllNotices._({this.id, this.title, this.date, this.importance})
+  _$BuiltAllNotices._(
+      {this.id, this.title, this.date, this.importance, this.description})
       : super._() {
     if (title == null) {
       throw new BuiltValueNullFieldError('BuiltAllNotices', 'title');
     }
     if (date == null) {
       throw new BuiltValueNullFieldError('BuiltAllNotices', 'date');
+    }
+    if (description == null) {
+      throw new BuiltValueNullFieldError('BuiltAllNotices', 'description');
     }
   }
 
@@ -7869,13 +7888,16 @@ class _$BuiltAllNotices extends BuiltAllNotices {
         id == other.id &&
         title == other.title &&
         date == other.date &&
-        importance == other.importance;
+        importance == other.importance &&
+        description == other.description;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc($jc(0, id.hashCode), title.hashCode), date.hashCode),
-        importance.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc(0, id.hashCode), title.hashCode), date.hashCode),
+            importance.hashCode),
+        description.hashCode));
   }
 
   @override
@@ -7884,7 +7906,8 @@ class _$BuiltAllNotices extends BuiltAllNotices {
           ..add('id', id)
           ..add('title', title)
           ..add('date', date)
-          ..add('importance', importance))
+          ..add('importance', importance)
+          ..add('description', description))
         .toString();
   }
 }
@@ -7909,6 +7932,10 @@ class BuiltAllNoticesBuilder
   int get importance => _$this._importance;
   set importance(int importance) => _$this._importance = importance;
 
+  String _description;
+  String get description => _$this._description;
+  set description(String description) => _$this._description = description;
+
   BuiltAllNoticesBuilder();
 
   BuiltAllNoticesBuilder get _$this {
@@ -7917,6 +7944,7 @@ class BuiltAllNoticesBuilder
       _title = _$v.title;
       _date = _$v.date;
       _importance = _$v.importance;
+      _description = _$v.description;
       _$v = null;
     }
     return this;
@@ -7939,7 +7967,11 @@ class BuiltAllNoticesBuilder
   _$BuiltAllNotices build() {
     final _$result = _$v ??
         new _$BuiltAllNotices._(
-            id: id, title: title, date: date, importance: importance);
+            id: id,
+            title: title,
+            date: date,
+            importance: importance,
+            description: description);
     replace(_$result);
     return _$result;
   }
@@ -7976,14 +8008,7 @@ class _$BuiltNoticeDetail extends BuiltNoticeDetail {
       this.downvotes,
       this.importance,
       this.has_voted})
-      : super._() {
-    if (title == null) {
-      throw new BuiltValueNullFieldError('BuiltNoticeDetail', 'title');
-    }
-    if (date == null) {
-      throw new BuiltValueNullFieldError('BuiltNoticeDetail', 'date');
-    }
-  }
+      : super._();
 
   @override
   BuiltNoticeDetail rebuild(void Function(BuiltNoticeDetailBuilder) updates) =>

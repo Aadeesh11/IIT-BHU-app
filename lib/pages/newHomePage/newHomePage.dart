@@ -79,7 +79,7 @@ class _NewHomePageState extends State<NewHomePage>
     // to retrun on home route on popping from search result screen
     if (searchBarWidget.isSearching.value) {
       Navigator.pop(context);
-      Navigator.pushNamed(context, '/newhome');
+      Navigator.pushNamed(context, '/home');
       return false;
     }
     return showDialog(

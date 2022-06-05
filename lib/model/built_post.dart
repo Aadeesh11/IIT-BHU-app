@@ -669,9 +669,11 @@ abstract class BuiltAllNotices
   @nullable
   int get id;
   String get title;
+
   String get date;
   @nullable
   int get importance;
+  String get description;
 
   BuiltAllNotices._();
   factory BuiltAllNotices([updates(BuiltAllNoticesBuilder b)]) =
@@ -684,9 +686,11 @@ abstract class BuiltNoticeDetail
     implements Built<BuiltNoticeDetail, BuiltNoticeDetailBuilder> {
   @nullable
   int get id;
+  @nullable
   String get title;
   @nullable
   String get description;
+  @nullable
   String get date;
   @nullable
   int get upvotes;

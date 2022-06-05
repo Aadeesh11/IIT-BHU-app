@@ -59,6 +59,7 @@ class DatabaseQuery {
         StringConst.titleString,
         StringConst.dateString,
         StringConst.importanceString,
+        StringConst.descriptionString,
       ],
     );
     if (maps.isEmpty) {
@@ -97,7 +98,7 @@ class DatabaseQuery {
     }
 
     var map = maps[0];
-    
+
     BuiltNoticeDetail notice = DatabaseMapping.noticeDetailFromMap(map);
     return notice;
   }

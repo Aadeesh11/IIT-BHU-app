@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -242,7 +243,7 @@ class _MyAppState extends State<TheMap> {
             },
             child: Text(
               title,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
           ),
         );
@@ -274,7 +275,7 @@ class _MyAppState extends State<TheMap> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(title ?? '(No Title)'),
+            title: Text(title ?? '(No Title)',style: TextStyle(color: Colors.black),),
             content: Text(innerText ?? '(No Inner Text)'),
             actions: <Widget>[
               TextButton(
@@ -325,9 +326,9 @@ class _MyAppState extends State<TheMap> {
       child: Scaffold(
         backgroundColor: ColorConstants.homeBackground,
         appBar: AppBar(
-          backgroundColor: ColorConstants.homeBackground,
+          backgroundColor: ColorConstants.backgroundThemeColor,
           title: Text((widget.fromCreateWorkshop ? 'Workshop Location-' : '') +
-              'IIT BHU Map'),
+              'IIT BHU Map',style: TextStyle(color: Colors.white),),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -340,7 +341,7 @@ class _MyAppState extends State<TheMap> {
           onPressed: () {
             _settingModalBottomSheet(context);
           },
-          label: Text("Popular \u{1F4CC}"),
+          label: Text("Popular \u{1F4CC}",style: TextStyle(color: Colors.black),),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Stack(
@@ -380,7 +381,7 @@ class _MyAppState extends State<TheMap> {
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            color: Colors.black),
+                            color: Colors.white),
                         child: Text(
                           'Clear X',
                           style: TextStyle(color: Colors.red),
@@ -419,7 +420,7 @@ class _MyAppState extends State<TheMap> {
                             for (var text in _tappableMarker.infoWindow.title
                                 .split(' ')) {
                               textList.add(Text(text,
-                                  style: TextStyle(color: Colors.white)));
+                                  style: TextStyle(color: Colors.black)));
                             }
 
                             return InkWell(
@@ -471,7 +472,7 @@ class _MyAppState extends State<TheMap> {
                                 ),
                                 child: Text(
                                   _tappableMarker.infoWindow.title,
-                                  style: TextStyle(color: Colors.white)
+                                  style: TextStyle(color: Colors.black)
                                   //  Column(
                                   //   children: textList,
                                   // )

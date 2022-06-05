@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iit_app/data/internet_connection_interceptor.dart';
+import 'package:iit_app/external_libraries/spin_kit.dart';
 import 'package:iit_app/model/appConstants.dart';
 import 'package:iit_app/model/built_post.dart';
 import 'package:iit_app/model/colorConstants.dart';
@@ -41,6 +43,8 @@ class LostAndFoundPage extends StatefulWidget {
 }
 
 class _LostAndFoundPageState extends State<LostAndFoundPage> {
+  BuiltProfilePost profileDetails;
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameTEC = TextEditingController();
   final TextEditingController _descItem = TextEditingController();
@@ -51,22 +55,22 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
     prefs = await SharedPreferences.getInstance();
     setState(
       () {
-        _nameTEC.text = prefs.getString('lfname') ?? "";
+        // _nameTEC.text = prefs.getString('lfname') ?? "";
         _descItem.text = prefs.getString('lfdescription') ?? "";
         _gDriveLink.text = prefs.getString('lfdrive') ?? "";
-        _branchName = prefs.getString('lfbranch');
-        _year = prefs.getString('lfyear');
+        // _branchName = prefs.getString('lfbranch');
+        // _year = prefs.getString('lfyear');
         _lfType = prefs.getString('lftype');
       },
     );
   }
 
   _clearPreferences() async {
-    prefs.setString('lfname', "");
+    // prefs.setString('lfname', "");
     prefs.setString('lfdescription', "");
     prefs.setString('lfdrive', "");
-    prefs.setString('lfyear', null);
-    prefs.setString('lfbranch', null);
+    // prefs.setString('lfyear', null);
+    // prefs.setString('lfbranch', null);
     prefs.setString('lftype', null);
   }
 
@@ -76,11 +80,11 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
 
   _resetValues({bool refresh = false}) async {
     setState(() {
-      _nameTEC.text = "";
+      // _nameTEC.text = "";
       _descItem.text = "";
       _gDriveLink.text = "";
-      _branchName = null;
-      _year = null;
+      // _branchName = null;
+      // _year = null;
       _lfType = null;
       _clearPreferences();
     });
@@ -135,6 +139,21 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
     );
   }
 
+  Future fetchProfileDetails() async {
+    await AppConstants.service
+        .getProfile(AppConstants.djangoToken)
+        .then((value) {
+      profileDetails = value.body;
+      setState(() {});
+    }).catchError((onError) {
+      if (onError is InternetConnectionException) {
+        AppConstants.internetErrorFlushBar.showFlushbar(context);
+        return;
+      }
+      print("Error in fetching profile: ${onError.toString()}");
+    });
+  }
+
   InputDecoration _getInputDecorationFor(String labelText,
       {FloatingLabelBehavior floatingLabelBehaviour =
           FloatingLabelBehavior.never,
@@ -186,8 +205,39 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
     );
   }
 
+  String NameofBranch() {
+    String bname = profileDetails.department;
+    int x = bname.indexOf('Engineering');
+    // var x = bname.split('Engineering');
+    // _branchName = x[0];
+    _branchName = bname.substring(0, x - 1);
+    print(_branchName);
+    _branchName.trim();
+    return _branchName;
+  }
+
+  String wYear() {
+    String x = profileDetails.year_of_joining;
+    int y = int.parse(x);
+    int val = DateTime.now().year - y;
+    if (DateTime.july == true) val++;
+    if (val == 1)
+      _year = val.toString() + 'st';
+    else if (val == 2)
+      _year = val.toString() + 'nd';
+    else if (val == 3)
+      _year = val.toString() + 'rd';
+    else
+      _year = val.toString() + 'th';
+
+    print(_year);
+    _year.trim();
+    return _year;
+  }
+
   @override
   void initState() {
+    fetchProfileDetails();
     super.initState();
     _retrieveValues();
     //fetching pending, closed , registered.
@@ -274,77 +324,120 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
             ),
           ],
         ),
-        body: ListView(children: [
-          Column(
-            children: [
-              SizedBox(
-                height: 50,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35.0, bottom: 20),
-                child: SizedBox(
-                  child: Center(
-                    child: Text(
-                      'Lost And Found Form',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: ColorConstants.grievanceBtn,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 45,
-                decoration: BoxDecoration(
-                  color: ColorConstants.grievanceBack,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        body: (profileDetails == null)
+            ? Container(
+                height: MediaQuery.of(context).size.height / 4,
                 child: Center(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 50,
-                          child: TextFormField(
-                            controller: _nameTEC,
-                            decoration: _getInputDecorationFor('Name',
-                                floatingLabelBehaviour:
-                                    FloatingLabelBehavior.auto),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              if (value.trim().isNotEmpty)
-                                prefs.setString('lfname', value);
-                            },
+                  child: LoadingCircle,
+                ),
+              )
+            : ListView(children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 35.0, bottom: 20),
+                      child: SizedBox(
+                        child: Center(
+                          child: Text(
+                            'Lost And Found Form',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: ColorConstants.grievanceBtn,
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              flex: 2,
-                              child: Container(
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 45,
+                      decoration: BoxDecoration(
+                        color: ColorConstants.grievanceBack,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      child: Center(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 50,
+                                child: TextFormField(
+                                  style: TextStyle(
+                                      color: ColorConstants.grievanceBtn,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                  initialValue: profileDetails.name,
+                                  readOnly: true,
+                                  decoration: _getInputDecorationFor('Name',
+                                      floatingLabelBehaviour:
+                                          FloatingLabelBehavior.auto),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 50,
+                                      child: TextFormField(
+                                        style: TextStyle(
+                                            color: ColorConstants.grievanceBtn,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                        readOnly: true,
+                                        decoration: _getInputDecorationFor(
+                                            'Branch',
+                                            floatingLabelBehaviour:
+                                                FloatingLabelBehavior.auto),
+                                        initialValue: NameofBranch(),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: Container(
+                                      height: 50,
+                                      child: TextFormField(
+                                        style: TextStyle(
+                                            color: ColorConstants.grievanceBtn,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                        readOnly: true,
+                                        decoration: _getInputDecorationFor(
+                                            'Year',
+                                            floatingLabelBehaviour:
+                                                FloatingLabelBehavior.auto),
+                                        initialValue: wYear(),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
                                 height: 50,
                                 child: DropdownButtonFormField<String>(
-                                  menuMaxHeight: 400,
-                                  alignment: Alignment.bottomCenter,
-                                  itemHeight: 50,
                                   style: TextStyle(
                                       color: ColorConstants.grievanceBtn,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 18),
-                                  decoration: _getInputDecorationFor('Branch'),
-                                  value: _branchName,
+                                  decoration:
+                                      _getInputDecorationFor('Lost OR Found'),
+                                  value: _lfType,
                                   isExpanded: true,
                                   validator: (value) {
                                     if (value == null) {
@@ -359,237 +452,138 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
                                   ),
                                   onChanged: (nv) {
                                     setState(() {
-                                      _branchName = nv;
+                                      _lfType = nv;
                                     });
-                                    if (nv.trim().isNotEmpty)
-                                      prefs.setString('lfbranch', _branchName);
+
+                                    prefs.setString('type', _lfType);
                                   },
                                   items: <String>[
-                                    'Architecture',
-                                    // 'Biochemical',
-                                    // 'Biomedical',
-                                    'Ceramic',
-                                    'Chemical',
-                                    //'Chemistry',
-                                    'Civil',
-                                    'Computer Science', //'Computer',
-                                    'Electrical',
-                                    'Electronics',
-                                    //'Materials',
-                                    //'Mathematics',
-                                    'Mechanical',
-                                    "Metallurgical", //'Metallurgy',
-                                    'Mining',
-                                    'Pharmaceutical',
-                                    // 'Physics',
-                                    // 'Humanities',
+                                    'Lost',
+                                    'Found',
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return _getDropDownItem(value, value);
                                   }).toList(),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Container(
-                                height: 50,
-                                child: DropdownButtonFormField<String>(
-                                  style: TextStyle(
-                                      color: ColorConstants.grievanceBtn,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                  decoration: _getInputDecorationFor('Year'),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                height: 100,
+                                child: TextFormField(
+                                  maxLength: 4000,
+                                  textAlignVertical: TextAlignVertical(y: -0.5),
+                                  expands: true,
+                                  maxLines: null,
+                                  controller: _descItem,
                                   validator: (value) {
-                                    if (value == null) {
-                                      return 'Please choose a value';
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
                                     }
                                     return null;
                                   },
-                                  value: _year,
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_sharp,
-                                    color: ColorConstants.grievanceBack,
-                                    size: 30,
-                                  ),
-                                  onChanged: (nv) {
-                                    setState(() {
-                                      _year = nv;
-                                    });
-                                    prefs.setString('lfyear', _year);
+                                  decoration: _getInputDecorationFor(
+                                      'Describe The Lost/Found Item',
+                                      floatingLabelBehaviour:
+                                          FloatingLabelBehavior.auto),
+                                  onChanged: (value) {
+                                    if (value.trim().isNotEmpty)
+                                      prefs.setString('description', value);
                                   },
-                                  items: <String>[
-                                    '1st',
-                                    '2nd',
-                                    '3rd',
-                                    '4th',
-                                    '5th',
-                                  ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return _getDropDownItem(value, value);
-                                  }).toList(),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          height: 50,
-                          child: DropdownButtonFormField<String>(
-                            style: TextStyle(
-                                color: ColorConstants.grievanceBtn,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18),
-                            decoration: _getInputDecorationFor('Lost OR Found'),
-                            value: _lfType,
-                            isExpanded: true,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Please choose a value';
-                              }
-                              return null;
-                            },
-                            icon: Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              color: ColorConstants.grievanceBack,
-                              size: 30,
-                            ),
-                            onChanged: (nv) {
-                              setState(() {
-                                _lfType = nv;
-                              });
-
-                              prefs.setString('type', _lfType);
-                            },
-                            items: <String>[
-                              'Lost',
-                              'Found',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return _getDropDownItem(value, value);
-                            }).toList(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          height: 100,
-                          child: TextFormField(
-                            maxLength: 4000,
-                            textAlignVertical: TextAlignVertical(y: -0.5),
-                            expands: true,
-                            maxLines: null,
-                            controller: _descItem,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            decoration: _getInputDecorationFor(
-                                'Describe The Lost/Found Item',
-                                floatingLabelBehaviour:
-                                    FloatingLabelBehavior.auto),
-                            onChanged: (value) {
-                              if (value.trim().isNotEmpty)
-                                prefs.setString('description', value);
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          height: 50,
-                          child: TextFormField(
-                            controller: _gDriveLink,
-                            decoration: _getInputDecorationFor(
-                              'Drive Link(Optional)',
-                              floatingLabelBehaviour:
-                                  FloatingLabelBehavior.auto,
-                              isRequired: false,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) return null;
-                              if (value.isNotEmpty) {
-                                if (value.startsWith(
-                                        'https://drive.google.com') ||
-                                    value.startsWith('drive.google.com')) {
-                                  return null;
-                                } else
-                                  return 'Enter a valid drive link';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              if (value.trim().isNotEmpty)
-                                prefs.setString('drive', value);
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            InkWell(
-                              splashColor: ColorConstants.grievanceBtn,
-                              radius: 20,
-                              onTap: () {
-                                _resetValues(refresh: false);
-                              },
-                              child: _getButton(
-                                bgColor: Colors.white,
-                                borderColor: ColorConstants.grievanceBtn,
-                                fontsize: 20,
-                                text: 'Clear',
-                                textColor: ColorConstants.grievanceBtn,
+                              SizedBox(
+                                height: 10,
                               ),
-                            ),
-                            InkWell(
-                              splashColor: ColorConstants.grievanceBtn,
-                              radius: 20,
-                              onTap: () {
-                                if (_formKey.currentState.validate()) {
-                                  //VALIDATE VALUES FIRRST and show snackbar if wrong values.
-                                  _showDialog(
-                                    name: _nameTEC.text,
-                                    branch: _branchName,
-                                    lfType: _lfType,
-                                    year: _year,
-                                    iDesc: _descItem.text,
-                                    gDriveLink: _gDriveLink.text,
-                                  );
-                                }
-                              },
-                              child: _getButton(
-                                bgColor: ColorConstants.grievanceBtn,
-                                borderColor: ColorConstants.grievanceBtn,
-                                fontsize: 20,
-                                text: 'Submit',
-                                textColor: Colors.white,
+                              Container(
+                                height: 50,
+                                child: TextFormField(
+                                  controller: _gDriveLink,
+                                  decoration: _getInputDecorationFor(
+                                    'Drive Link(Optional)',
+                                    floatingLabelBehaviour:
+                                        FloatingLabelBehavior.auto,
+                                    isRequired: false,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty)
+                                      return null;
+                                    if (value.isNotEmpty) {
+                                      if (value.startsWith(
+                                              'https://drive.google.com') ||
+                                          value
+                                              .startsWith('drive.google.com')) {
+                                        return null;
+                                      } else
+                                        return 'Enter a valid drive link';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    if (value.trim().isNotEmpty)
+                                      prefs.setString('drive', value);
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InkWell(
+                                    splashColor: ColorConstants.grievanceBtn,
+                                    radius: 20,
+                                    onTap: () {
+                                      _resetValues(refresh: false);
+                                    },
+                                    child: _getButton(
+                                      bgColor: Colors.white,
+                                      borderColor: ColorConstants.grievanceBtn,
+                                      fontsize: 20,
+                                      text: 'Clear',
+                                      textColor: ColorConstants.grievanceBtn,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    splashColor: ColorConstants.grievanceBtn,
+                                    radius: 20,
+                                    onTap: () {
+                                      if (_formKey.currentState.validate()) {
+                                        //VALIDATE VALUES FIRRST and show snackbar if wrong values.
+                                        _showDialog(
+                                          name: profileDetails.name,
+                                          branch: _branchName,
+                                          lfType: _lfType,
+                                          year: _year,
+                                          iDesc: _descItem.text,
+                                          gDriveLink: _gDriveLink.text,
+                                        );
+                                      }
+                                    },
+                                    child: _getButton(
+                                      bgColor: ColorConstants.grievanceBtn,
+                                      borderColor: ColorConstants.grievanceBtn,
+                                      fontsize: 20,
+                                      text: 'Submit',
+                                      textColor: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-        ]),
+              ]),
       ),
     );
   }

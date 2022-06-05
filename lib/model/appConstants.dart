@@ -363,7 +363,6 @@ class AppConstants {
       try {
         DatabaseHelper helper = DatabaseHelper.instance;
         var database = await helper.database;
-
         noticePost = await DatabaseQuery.getNoticeDetail(
             db: database, noticeId: noticeId);
         print('fetching notice detail from json for updation');

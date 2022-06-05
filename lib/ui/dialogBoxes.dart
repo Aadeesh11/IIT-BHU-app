@@ -127,11 +127,12 @@ Future<bool> getLogoutDialog(context, details) => showDialog(
                   Container(
                     height: 100.0,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
-                        ),
-                        color: Colors.teal),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                      color: Color(0xFF176ede),
+                    ),
                   ),
                   Positioned(
                       top: 50.0,
@@ -155,6 +156,7 @@ Future<bool> getLogoutDialog(context, details) => showDialog(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
                     details[1],
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Quicksand',
                       fontSize: 14.0,
@@ -168,9 +170,10 @@ Future<bool> getLogoutDialog(context, details) => showDialog(
                   child: Text(
                     'Logout',
                     style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 14.0,
-                        color: Colors.teal),
+                      fontFamily: 'Montserrat',
+                      fontSize: 18.0,
+                      color: Color(0xFF176ede),
+                    ),
                   ),
                 ),
                 onPressed: () {

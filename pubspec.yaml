@@ -56,6 +56,7 @@ dependencies:
 
   # web
   universal_io: ^1.0.2
+  colorful_safe_area: ^0.3.0
   
 
 dev_dependencies:

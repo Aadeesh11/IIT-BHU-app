@@ -289,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
         });
 
         Navigator.of(context)
-            .pushNamedAndRemoveUntil('/newhome', ModalRoute.withName('/root'));
+            .pushNamedAndRemoveUntil('/home', ModalRoute.withName('/root'));
       }
     }
 

@@ -75,7 +75,6 @@ class _EventsState extends State<Events> {
 Widget builtAllWorkshopsBodyPosts(
     BuildContext context, BuiltAllWorkshopsPost posts,
     {Function reload}) {
-  Size screensize = MediaQuery.of(context).size;
   return ListView(
     children: [
       ListView.builder(

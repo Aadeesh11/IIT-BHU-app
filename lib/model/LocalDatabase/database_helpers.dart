@@ -66,7 +66,8 @@ class DatabaseHelper {
           '        ${StringConst.idString} INTEGER PRIMARY KEY, '
           '        ${StringConst.titleString} DEFAULT "",'
           '        ${StringConst.importanceString} INTEGER DEFAULT 0, '
-          '        ${StringConst.dateString} DEFAULT "") WITHOUT ROWID');
+          '        ${StringConst.dateString} DEFAULT "", '
+          '        ${StringConst.descriptionString} DEFAULT "") WITHOUT ROWID,');
 
 //for notice detail
       await db.execute('      CREATE TABLE ${StringConst.noticeDetailString} ('
@@ -105,7 +106,8 @@ class DatabaseHelper {
         '        ${StringConst.idString} INTEGER PRIMARY KEY, '
         '        ${StringConst.titleString} DEFAULT "",'
         '        ${StringConst.importanceString} INTEGER DEFAULT 0, '
-        '        ${StringConst.dateString} DEFAULT "") WITHOUT ROWID');
+        '        ${StringConst.dateString} DEFAULT "", '
+        '        ${StringConst.descriptionString} DEFAULT "") WITHOUT ROWID');
 
 //for notice detail
     await db.execute('      CREATE TABLE ${StringConst.noticeDetailString} ('

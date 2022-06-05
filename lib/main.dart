@@ -47,9 +47,7 @@ void main() async {
       //! '/root' is root route and should always remain in navigator stack, period. (so that FCM notification will always have a stable context to act upon)
 
       '/root': (BuildContext context) => RootPage(),
-      // '/newhome': (BuildContext context) => NewHomeScreen(),
       '/home': (BuildContext context) => NewHomePage(),
-      // '/home': (BuildContext context) => HomePage(),
       '/mapPage': (BuildContext context) => MapPage(),
       '/academicsPage': (BuildContext context) => AcademicsPage(),
       '/mess': (BuildContext context) => MessScreen(),
