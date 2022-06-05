@@ -50,6 +50,21 @@ class _NoticeBoardState extends State<NoticeBoard> {
           }
 
           final posts = snapshot.data;
+          if (posts.length == 0) {
+            return Center(
+              child: Text(
+                'No notices at the moment',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.montserrat(
+                  textStyle: TextStyle(
+                    color: Color(0xFF1d72df),
+                    fontWeight: FontWeight.w300,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            );
+          }
 
           return builtAllNotices(context, posts, reload: reload);
         } else {
