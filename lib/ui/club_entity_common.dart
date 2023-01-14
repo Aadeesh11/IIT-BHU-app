@@ -68,6 +68,9 @@ class ClubAndEntityWidgets {
       child: Column(
         children: [
           TabBar(
+            onTap: (value) {
+              panelController.panelPosition = 1.0;
+            },
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorColor: ColorConstants.headingColor,
             tabs: [

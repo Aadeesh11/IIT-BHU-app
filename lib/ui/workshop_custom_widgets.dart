@@ -93,7 +93,7 @@ class WorkshopCustomWidgets {
               ? Text("CLICK TO EDIT", style: TextStyle(color: Colors.green))
               : SizedBox(height: 1),
           Container(height: 4.0),
-          Text(w.title, style: Style.titleTextStyle),
+          Text(w.title, style: Style.titleTextStyle,maxLines: 3,),
           Container(height: 10.0),
           Text('${isClub ? w.club.name : w.entity.name}',
               style: Style.commonTextStyle),
@@ -120,9 +120,9 @@ class WorkshopCustomWidgets {
 
     final workshopCard = Container(
       child: workshopCardContent,
-      height: horizontal ? 140.0 : 154.0,
+      height: horizontal ? 145.0 : 154.0,
       margin:
-          horizontal ? EdgeInsets.only(left: 46.0) : EdgeInsets.only(top: 72.0),
+          horizontal ? EdgeInsets.only(left: 46.0) : EdgeInsets.only(top: 90.0),
       decoration: BoxDecoration(
         color: ColorConstants.workshopCardContainer,
         shape: BoxShape.rectangle,
@@ -183,7 +183,9 @@ class WorkshopCustomWidgets {
             child: Stack(
               children: <Widget>[
                 workshopCard,
-                workshopThumbnail,
+                SizedBox(
+                  height: 120,
+                  child: workshopThumbnail),
               ],
             ),
           ));

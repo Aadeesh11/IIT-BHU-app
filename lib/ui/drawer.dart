@@ -290,7 +290,8 @@ class SideBar extends Drawer {
         .entitiesSummaryFromDatabase
         ?.where((entity) => entity.is_highlighted == true)
         ?.toBuiltList();
-    return ListView.builder(
+    return entities!=null ?  
+    ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: entities.length,
@@ -311,8 +312,10 @@ class SideBar extends Drawer {
                   pageBuilder: (_, __, ___) =>
                       EntityPage(entityId: entities[index].id)));
             },
-          );
+          )
+          ;
           // }
-        });
+        }):Container();
+        ;
   }
 }

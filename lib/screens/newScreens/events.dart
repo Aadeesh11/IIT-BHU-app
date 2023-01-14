@@ -211,7 +211,7 @@ class EventCard extends StatelessWidget {
     var cardwidth = kIsWeb ? 200 : screensize.width;
     var cardheight = kIsWeb ? 200 : screensize.height * 0.155;
     return Container(
-      height: cardheight * 1.1,
+      height: cardheight * 1.2,
       width: cardwidth * 1.5,
       margin: EdgeInsets.only(left: 1.0, right: 1.0),
       child: Stack(
@@ -318,7 +318,7 @@ Widget _workshopValue({String value, IconData icon}) {
   return Container(
     child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
       Icon(icon, color: Color(0xff176EDE), size: 12.0),
-      Container(width: 8.0),
+      Container(),
       Text(value, style: Style.smallTextStyle),
     ]),
   );

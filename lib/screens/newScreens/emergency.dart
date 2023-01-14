@@ -6,29 +6,15 @@ import '../../model/appConstants.dart';
 import '../../model/colorConstants.dart';
 
 final List<String> Names = [
-  'Vatsal Dwivedi',
-  'Shashwat Khare',
-  'Vaishnav Khaitan',
   'Ambulance',
   'Proctor Office',
   'Security Convenor',
   'Counselor',
 ];
 
-final List<String> Positions = [
-  '(V.P.)',
-  '(A.V.P.)',
-  null,
-  null,
-  null,
-  null,
-  null
-];
+final List<String> Positions = [null, null, null, null];
 
 final List<String> Pics = [
-  'assets/vp.jpeg',
-  'assets/avp.jpeg',
-  'assets/vaishnav.jpeg',
   'assets/ambulance.png',
   'assets/police.png',
   'assets/shield.png',
@@ -36,9 +22,6 @@ final List<String> Pics = [
 ];
 
 final List<String> Numbers = [
-  '+91 95717 14294',
-  '+91 83196 07944',
-  '+91 90686 74125',
   '+91 54223 09259',
   '+91 542 236 9134',
   '+91 96712 14347',
@@ -122,7 +105,7 @@ class Emergency extends StatelessWidget {
           body: GridView.builder(
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            itemCount: 7,
+            itemCount: Names.length,
             itemBuilder: (context, index) => EmergencyTile(
                 pic: Pics[index],
                 name: Names[index],

@@ -50,14 +50,14 @@ dependencies:
   share_plus: ^1.2.0
   shared_preferences: ^0.5.6+3
   skeleton_text: ^1.0.0
-  sliding_up_panel: ^1.0.2
+  sliding_up_panel: ^2.0.0+1
   sqflite: ^1.2.0
   url_launcher: ^5.1.6
 
   # web
   universal_io: ^1.0.2
   colorful_safe_area: ^0.3.0
-  
+  fluttertoast: ^8.1.2
 
 dev_dependencies:
   # No version number means the latest version

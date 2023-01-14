@@ -93,9 +93,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(),
         Container(
-          height: size.width * 0.35,
           width: size.width * 0.35,
           decoration: BoxDecoration(
               shape: BoxShape.circle,

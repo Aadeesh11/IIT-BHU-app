@@ -20,6 +20,7 @@ import 'package:iit_app/ui/separator.dart';
 import 'package:iit_app/ui/text_style.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ClubCouncilAndEntityWidgets {
   static Widget getPanelBackground(
@@ -173,7 +174,7 @@ class ClubCouncilAndEntityWidgets {
                   isEntity: isEntity,
                   isSports: (isClub && club.council.name.contains('Sport')),
                 ),
-                _data != null
+                (_data != null && isCouncil==false)
                     ? getSubscribeButtons(
                         context: context,
                         isCouncil: isCouncil,
@@ -245,10 +246,11 @@ class ClubCouncilAndEntityWidgets {
           ),
           onPressed: AppConstants.isGuest
               ? () {
-                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                  var snackbar =
-                      SnackBar(content: Text("Please Log in to Mute"));
-                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  // ScaffoldMessenger.of(context)?.removeCurrentSnackBar();
+                  // var snackbar =
+                  //     SnackBar(content: Text("Please Log in to Mute"));
+                  // ScaffoldMessenger.of(context)?.showSnackBar(snackbar);
+                  Fluttertoast.showToast(msg: "Please Log in to Mute");
                 }
               : _disableMuteButton // disable mute button if not subscribed in case of club/entity.
                   ? null
@@ -265,13 +267,17 @@ class ClubCouncilAndEntityWidgets {
                                 "Are you sure you wish to mute all the clubs in this council? You will no longer receive any notification for workshops or events of this council.",
                           );
                           if (unsub) {
-                            scaffoldMessengerKey.currentState
-                                .removeCurrentSnackBar();
-                            scaffoldMessengerKey.currentState
-                                .showSnackBar(SnackBar(
-                              content: Text('Muting. Please Wait'),
-                              duration: Duration(seconds: 10),
-                            ));
+                            // await scaffoldMessengerKey.currentState
+                            //     ?.removeCurrentSnackBar();
+                            
+                            // scaffoldMessengerKey.currentState
+                            //     ?.showSnackBar(SnackBar(
+                            //   content: Text('Muting. Please Wait'),
+                            //   duration: Duration(seconds: 10),
+                            // ));
+                            Fluttertoast.showToast(
+                                msg:"Muting. Please Wait"
+                            );
                             List<int> clubIds = await AppConstants
                                 .updateCouncilSubscriptionInDatabase(
                                     councilId: councilId, isSubscribed: false);
@@ -289,13 +295,16 @@ class ClubCouncilAndEntityWidgets {
                                       .then((_) =>
                                           print('Unsubscribed from C_$i'));
                                 }
-                                scaffoldMessengerKey.currentState
-                                    .removeCurrentSnackBar();
-                                scaffoldMessengerKey.currentState
-                                    .showSnackBar(SnackBar(
-                                  content: Text('Successfully Muted!'),
-                                  duration: Duration(seconds: 3),
-                                ));
+                                // scaffoldMessengerKey.currentState
+                                //     ?.removeCurrentSnackBar();
+                                // scaffoldMessengerKey.currentState
+                                //     ?.showSnackBar(SnackBar(
+                                //   content: Text('Successfully Muted!'),
+                                //   duration: Duration(seconds: 3),
+                                // ));
+                                Fluttertoast.showToast(
+                                    msg:"Successfully Muted!"
+                                );
                               }
                             }).catchError((onError) {
                               if (onError is InternetConnectionException) {
@@ -348,11 +357,14 @@ class ClubCouncilAndEntityWidgets {
                                           .unsubscribeFromTopic(
                                               'C_${clubMap.id}');
                                     }
-                                    scaffoldMessengerKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text('Successfully Muted'),
-                                      duration: Duration(seconds: 3),
-                                    ));
+                                    // scaffoldMessengerKey.currentState
+                                    //     ?.showSnackBar(SnackBar(
+                                    //   content: Text('Successfully Muted'),
+                                    //   duration: Duration(seconds: 3),
+                                    // ));
+                                    Fluttertoast.showToast(
+                                        msg:"Successfully Muted"
+                                    );
                                   } on InternetConnectionException catch (_) {
                                     AppConstants.internetErrorFlushBar
                                         .showFlushbar(context);
@@ -371,11 +383,14 @@ class ClubCouncilAndEntityWidgets {
                                     "Error in toggleing: ${onError.toString()}");
                               });
                             } else {
-                              scaffoldMessengerKey.currentState
-                                  .showSnackBar(SnackBar(
-                                content: Text('Already Muted!'),
-                                duration: Duration(seconds: 3),
-                              ));
+                              // scaffoldMessengerKey.currentState
+                              //     ?.showSnackBar(SnackBar(
+                              //   content: Text('Already Muted!'),
+                              //   duration: Duration(seconds: 3),
+                              // ));
+                              Fluttertoast.showToast(
+                                  msg:"Already Muted!"
+                              );
                             }
                           }
                         } else {
@@ -421,11 +436,14 @@ class ClubCouncilAndEntityWidgets {
                                               'E_${entityMap.id}');
                                     }
 
-                                    scaffoldMessengerKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text('Successfully Muted'),
-                                      duration: Duration(seconds: 3),
-                                    ));
+                                    // scaffoldMessengerKey.currentState
+                                    //     ?.showSnackBar(SnackBar(
+                                    //   content: Text('Successfully Muted'),
+                                    //   duration: Duration(seconds: 3),
+                                    // ));
+                                    Fluttertoast.showToast(
+                                        msg:"Successfully Muted"
+                                    );
                                   } on InternetConnectionException catch (_) {
                                     AppConstants.internetErrorFlushBar
                                         .showFlushbar(context);
@@ -444,11 +462,14 @@ class ClubCouncilAndEntityWidgets {
                                     "Error in toggleing: ${onError.toString()}");
                               });
                             } else {
-                              scaffoldMessengerKey.currentState
-                                  .showSnackBar(SnackBar(
-                                content: Text('Already Muted!'),
-                                duration: Duration(seconds: 3),
-                              ));
+                              // scaffoldMessengerKey.currentState
+                              //     ?.showSnackBar(SnackBar(
+                              //   content: Text('Already Muted!'),
+                              //   duration: Duration(seconds: 3),
+                              // ));
+                              Fluttertoast.showToast(
+                                  msg:"Already Muted!"
+                              );
                             }
                           }
                         }
@@ -486,10 +507,13 @@ class ClubCouncilAndEntityWidgets {
           ),
           onPressed: AppConstants.isGuest
               ? () {
-                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                  var snackbar =
-                      SnackBar(content: Text("Please Log in to Unmute"));
-                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  // ScaffoldMessenger.of(context)?.removeCurrentSnackBar();
+                  // var snackbar =
+                  //     SnackBar(content: Text("Please Log in to Unmute"));
+                  // ScaffoldMessenger.of(context)?.showSnackBar(snackbar);
+                  Fluttertoast.showToast(
+                      msg:"Please Log in to Unmute"
+                  );
                 }
               : _disableUnmuteButton // disable unmute button if already subscribed in case of club/entity.
                   ? null
@@ -497,13 +521,16 @@ class ClubCouncilAndEntityWidgets {
                       if (!toggling) {
                         toggler();
                         if (isCouncil) {
-                          scaffoldMessengerKey.currentState
-                              .removeCurrentSnackBar();
-                          scaffoldMessengerKey.currentState
-                              .showSnackBar(SnackBar(
-                            content: Text('Unmuting. Please Wait'),
-                            duration: Duration(seconds: 10),
-                          ));
+                          // scaffoldMessengerKey.currentState
+                          //     ?.removeCurrentSnackBar();
+                          // scaffoldMessengerKey.currentState
+                          //     ?.showSnackBar(SnackBar(
+                          //   content: Text('Unmuting. Please Wait'),
+                          //   duration: Duration(seconds: 10),
+                          // ));
+                          Fluttertoast.showToast(
+                              msg:"Unmuting. Please Wait"
+                          );
                           int councilId = data.id;
                           List<int> clubIds = await AppConstants
                               .updateCouncilSubscriptionInDatabase(
@@ -521,13 +548,16 @@ class ClubCouncilAndEntityWidgets {
                                     .subscribeToTopic('C_$i')
                                     .then((_) => print('Subscribed to C_$i'));
                               }
-                              scaffoldMessengerKey.currentState
-                                  .removeCurrentSnackBar();
-                              scaffoldMessengerKey.currentState
-                                  .showSnackBar(SnackBar(
-                                content: Text('Successfully Unmuted!'),
-                                duration: Duration(seconds: 3),
-                              ));
+                              // scaffoldMessengerKey.currentState
+                              //     ?.removeCurrentSnackBar();
+                              // scaffoldMessengerKey.currentState
+                              //     ?.showSnackBar(SnackBar(
+                              //   content: Text('Successfully Unmuted!'),
+                              //   duration: Duration(seconds: 3),
+                              // ));
+                              Fluttertoast.showToast(
+                                  msg:"Successfully Unmuted!"
+                              );
                             }
                           }).catchError((onError) {
                             if (onError is InternetConnectionException) {
@@ -571,11 +601,14 @@ class ClubCouncilAndEntityWidgets {
                                         .unsubscribeFromTopic(
                                             'C_${clubMap.id}');
                                   }
-                                  scaffoldMessengerKey.currentState
-                                      .showSnackBar(SnackBar(
-                                    content: Text('Successfully Unmuted!'),
-                                    duration: Duration(seconds: 3),
-                                  ));
+                                  // scaffoldMessengerKey.currentState
+                                  //     ?.showSnackBar(SnackBar(
+                                  //   content: Text('Successfully Unmuted!'),
+                                  //   duration: Duration(seconds: 3),
+                                  // ));
+                                  Fluttertoast.showToast(
+                                      msg:"Successfully Unmuted!"
+                                  );
                                 } on InternetConnectionException catch (_) {
                                   AppConstants.internetErrorFlushBar
                                       .showFlushbar(context);
@@ -594,11 +627,14 @@ class ClubCouncilAndEntityWidgets {
                                   "Error in toggleing: ${onError.toString()}");
                             });
                           } else {
-                            scaffoldMessengerKey.currentState
-                                .showSnackBar(SnackBar(
-                              content: Text('Already Unmuted!'),
-                              duration: Duration(seconds: 3),
-                            ));
+                            // scaffoldMessengerKey.currentState
+                            //     ?.showSnackBar(SnackBar(
+                            //   content: Text('Already Unmuted!'),
+                            //   duration: Duration(seconds: 3),
+                            // ));
+                            Fluttertoast.showToast(
+                                msg:"Already Unmuted!"
+                            );
                           }
                         } else {
                           if (!data.is_subscribed) {
@@ -634,11 +670,14 @@ class ClubCouncilAndEntityWidgets {
                                         .unsubscribeFromTopic(
                                             'E_${entityMap.id}');
                                   }
-                                  scaffoldMessengerKey.currentState
-                                      .showSnackBar(SnackBar(
-                                    content: Text('Successfully Unmuted!'),
-                                    duration: Duration(seconds: 3),
-                                  ));
+                                  // scaffoldMessengerKey.currentState
+                                  //     ?.showSnackBar(SnackBar(
+                                  //   content: Text('Successfully Unmuted!'),
+                                  //   duration: Duration(seconds: 3),
+                                  // ));
+                                  Fluttertoast.showToast(
+                                      msg:"Successfully Unmuted!"
+                                  );
                                 } on InternetConnectionException catch (_) {
                                   AppConstants.internetErrorFlushBar
                                       .showFlushbar(context);
@@ -657,11 +696,14 @@ class ClubCouncilAndEntityWidgets {
                                   "Error in toggleing: ${onError.toString()}");
                             });
                           } else {
-                            scaffoldMessengerKey.currentState
-                                .showSnackBar(SnackBar(
-                              content: Text('Already Unuted!'),
-                              duration: Duration(seconds: 3),
-                            ));
+                            // scaffoldMessengerKey.currentState
+                            //     ?.showSnackBar(SnackBar(
+                            //   content: Text('Already Unuted!'),
+                            //   duration: Duration(seconds: 3),
+                            // ));
+                            Fluttertoast.showToast(
+                                msg:"Already Unmuted!"
+                            );
                           }
                         }
                         toggler();

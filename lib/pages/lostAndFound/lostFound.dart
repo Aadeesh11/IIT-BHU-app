@@ -220,7 +220,7 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
     String x = profileDetails.year_of_joining;
     int y = int.parse(x);
     int val = DateTime.now().year - y;
-    if (DateTime.july == true) val++;
+    if (DateTime.now().month >= 7) val++;
     if (val == 1)
       _year = val.toString() + 'st';
     else if (val == 2)
@@ -455,7 +455,7 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
                                       _lfType = nv;
                                     });
 
-                                    prefs.setString('type', _lfType);
+                                    prefs.setString('lftype', _lfType);
                                   },
                                   items: <String>[
                                     'Lost',
@@ -489,7 +489,7 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
                                           FloatingLabelBehavior.auto),
                                   onChanged: (value) {
                                     if (value.trim().isNotEmpty)
-                                      prefs.setString('description', value);
+                                      prefs.setString('lfdescription', value);
                                   },
                                 ),
                               ),
@@ -522,7 +522,7 @@ class _LostAndFoundPageState extends State<LostAndFoundPage> {
                                   },
                                   onChanged: (value) {
                                     if (value.trim().isNotEmpty)
-                                      prefs.setString('drive', value);
+                                      prefs.setString('lfdrive', value);
                                   },
                                 ),
                               ),

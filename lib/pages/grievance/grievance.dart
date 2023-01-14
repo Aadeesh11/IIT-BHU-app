@@ -138,7 +138,7 @@ class _GrievancePageState extends State<GrievancePage> {
 
   DropdownMenuItem<String> _getDropDownItem(String title, String value) {
     return DropdownMenuItem<String>(
-      child: Text(title),
+      child: Text(title == "HostelMess" ? "Hostel/Mess" : title),
       value: value,
     );
   }
@@ -279,7 +279,7 @@ class _GrievancePageState extends State<GrievancePage> {
     String x = profileDetails.year_of_joining;
     int y = int.parse(x);
     int val = DateTime.now().year - y;
-    if (DateTime.july == true) val++;
+    if (DateTime.now().month >= 7) val++;
     if (val == 1)
       _year = val.toString() + 'st';
     else if (val == 2)

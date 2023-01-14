@@ -13,7 +13,8 @@ abstract class PostApiService extends ChopperService {
 
   //? ----------------------------------- Get -------------------------------
   @Get(path: '/academics/academic-schedule/{dept}/{year}/')
-  Future<Response> getAcademicSchedule(@Path('dept') String dept,@Path('year') String yearOfJoining);
+  Future<Response> getAcademicSchedule(
+      @Path('dept') String dept, @Path('year') String yearOfJoining);
 
   @Get(path: '/academics/profs/{dept}/')
   Future<Response> getProfsAndHODs(@Path('dept') String dept);
@@ -26,15 +27,15 @@ abstract class PostApiService extends ChopperService {
 
   @Get(path: '/parliamentSuggestions/{id}/')
   Future<Response> getParliamentSuggestionDetails(
-      @Path('id') int id,@Header('Authorization') String token);
+      @Path('id') int id, @Header('Authorization') String token);
 
   @Get(path: '/parliamentSuggestions/{id}/upvote/')
   Future<Response> upvoteASuggestion(
-      @Path('id') int id,@Header('Authorization') String token);
+      @Path('id') int id, @Header('Authorization') String token);
 
   @Get(path: '/parliamentSuggestions/{id}/downvote/')
   Future<Response> downvoteASuggestion(
-      @Path('id') int id,@Header('Authorization') String token);
+      @Path('id') int id, @Header('Authorization') String token);
 
   @Post(path: '/parliamentSuggestions/create/')
   Future<Response<CreateSuggestion>> createParliamentSuggestion(
@@ -415,7 +416,7 @@ abstract class PostApiService extends ChopperService {
 
   static PostApiService create() {
     final client = ChopperClient(
-      baseUrl: 'https://workshops-app-backend.herokuapp.com',
+      baseUrl: 'https://lite-hai.onrender.com',
       services: [
         _$PostApiService(),
       ],

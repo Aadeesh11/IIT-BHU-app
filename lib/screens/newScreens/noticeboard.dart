@@ -125,7 +125,7 @@ Widget builtAllNotices(BuildContext context, BuiltList<BuiltAllNotices> posts,
                     .copyWith(dividerColor: Colors.transparent),
                 child: ExpansionTile(
                   title: Container(
-                    height: 58.0,
+                    // height: 72.0,
                     // margin: const EdgeInsets.all(4.0),
                     padding: const EdgeInsets.only(
                         top: 8, bottom: 8, left: 10, right: 0),
