@@ -11,8 +11,10 @@ class ClubAndEntityWidgets {
     Widget _builder(w) {
       return w.length == 0
           ? Center(
-              child:
-                  Text('No Activity :(', style: TextStyle(color: ColorConstants.headingColor)))
+              child: Container(
+              child: Text('No Activity',
+                  style: TextStyle(color: ColorConstants.headingColor)),
+            ))
           : ListView.builder(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
@@ -36,16 +38,24 @@ class ClubAndEntityWidgets {
             controller: _controller,
             children: [
               SizedBox(height: 15),
+              Text(
+                'Active:',
+                style:
+                    TextStyle(color: ColorConstants.headingColor, fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),
               _builder(workshops.active_workshops
                   .where((w) => isEvent ? !w.is_workshop : w.is_workshop)
                   .toList()),
-              SizedBox(height: 15),
+              SizedBox(height: 35),
               Text(
                 'Past:',
-                style: TextStyle(color: ColorConstants.headingColor, fontSize: 25),
+                style:
+                    TextStyle(color: ColorConstants.headingColor, fontSize: 20),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               _builder(workshops.past_workshops
                   .where((w) => isEvent ? !w.is_workshop : w.is_workshop)
                   .toList()),
@@ -68,18 +78,21 @@ class ClubAndEntityWidgets {
       child: Column(
         children: [
           TabBar(
-            onTap: (value) {
-              panelController.panelPosition = 1.0;
-            },
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorColor: ColorConstants.headingColor,
             tabs: [
-              Tab(child: Text('Workshops',
-                style: TextStyle(color: ColorConstants.headingColor),
-              ),),
-              Tab(child: Text('Events',
-                style: TextStyle(color: ColorConstants.headingColor),
-              ),),
+              Tab(
+                child: Text(
+                  'Workshops',
+                  style: TextStyle(color: ColorConstants.headingColor),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  'Events',
+                  style: TextStyle(color: ColorConstants.headingColor),
+                ),
+              ),
             ],
             controller: tabController,
           ),
